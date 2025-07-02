@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Temperature Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f9fafb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #111827;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      padding: 40px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 24px;
+      text-align: center;
+      color: #1f2937;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 20px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: #f9fafb;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #1d4ed8;
+    }
+
+    .result {
+      margin-top: 20px;
+      padding: 15px;
+      background: #e0f2fe;
+      border-left: 5px solid #0284c7;
+      border-radius: 6px;
+      font-weight: 500;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Temperature Converter</h1>
+    <label for="temperature">Enter Temperature</label>
+    <input type="number" id="temperature" placeholder="e.g. 100" required />
+
+    <label for="from">Convert From</label>
+    <select id="from">
+      <option value="C">Celsius</option>
+      <option value="F">Fahrenheit</option>
+      <option value="K">Kelvin</option>
+    </select>
+
+    <label for="to">Convert To</label>
+    <select id="to">
+      <option value="F">Fahrenheit</option>
+      <option value="C">Celsius</option>
+      <option value="K">Kelvin</option>
+    </select>
+
+    <button onclick="convertTemp()">Convert</button>
+
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    function convertTemp() {
+      const temp = parseFloat(document.getElementById("temperature").value);
+      const from = document.getElementById("from").value;
+      const to = document.getElementById("to").value;
+      const resultBox = document.getElementById("result");
+
+      if (isNaN(temp)) {
+        resultBox.style.display = "block";
+        resultBox.style.background = "#fee2e2";
+        resultBox.style.borderLeft = "5px solid #dc2626";
+        resultBox.textContent = "❗ Please enter a valid number.";
+        return;
+      }
+
+      if (from === to) {
+        resultBox.style.display = "block";
+        resultBox.style.background = "#fef9c3";
+        resultBox.style.borderLeft = "5px solid #ca8a04";
+        resultBox.textContent = `Same unit selected. Result: ${temp.toFixed(2)}°${to}`;
+        return;
+      }
+
+      // Convert to Celsius
+      let celsius;
+      if (from === "C") celsius = temp;
+      else if (from === "F") celsius = (temp - 32) * 5 / 9;
+      else if (from === "K") celsius = temp - 273.15;
+
+      // Convert from Celsius to target unit
+      let result;
+      if (to === "C") result = celsius;
+      else if (to === "F") result = (celsius * 9 / 5) + 32;
+      else if (to === "K") result = celsius + 273.15;
+
+      resultBox.style.display = "block";
+      resultBox.style.background = "#e0f2fe";
+      resultBox.style.borderLeft = "5px solid #0284c7";
+      resultBox.textContent = `✅ Converted Temperature: ${result.toFixed(2)}°${to}`;
+    }
+  </script>
+
+</body>
+</html>
